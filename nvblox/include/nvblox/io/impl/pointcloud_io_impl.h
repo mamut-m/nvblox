@@ -18,6 +18,10 @@ limitations under the License.
 #include "nvblox/core/accessors.h"
 #include "nvblox/io/ply_writer.h"
 
+#include <chrono>
+#include "iostream"
+
+
 namespace nvblox {
 namespace io {
 
@@ -30,6 +34,7 @@ bool outputVoxelLayerToPly(
   // Create a ply writer object.
   io::PlyWriter writer(filename);
 
+  auto start = std::chrono::high_resolution_clock::now();
   // Combine all the voxels in the mesh into a pointcloud.
   std::vector<Vector3f> points;
   std::vector<float> intensities;
@@ -51,6 +56,14 @@ bool outputVoxelLayerToPly(
 
   // Call above lambda on every voxel in the layer.
   callFunctionOnAllVoxels<VoxelType>(layer, new_lambda);
+
+  auto stop = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+  auto durcount = duration.count();
+  std::cout << "#################################################" << std::endl;
+  std::cout << filename << std::endl;
+  std::cout << "Time needed for writing to RAM: " << durcount << " microseconds" << std::endl;
+  std::cout << "#################################################" << std::endl;
 
   // Add the pointcloud to the ply writer.
   writer.setPoints(&points);
