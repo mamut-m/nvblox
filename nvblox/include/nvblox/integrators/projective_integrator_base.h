@@ -70,7 +70,7 @@ class ProjectiveIntegratorBase {
   // Params
   float truncation_distance_vox_ = 4.0f;
   float max_weight_ = 100.0f;
-  float max_integration_distance_m_ = 10.0f;
+  float max_integration_distance_m_ = 20.0f;
 
   // Frustum calculation.
   mutable FrustumCalculator frustum_calculator_;
